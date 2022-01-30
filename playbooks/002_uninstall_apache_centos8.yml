@@ -23,7 +23,7 @@
     - name: Close firewall port for apache
       ansible.posix.firewalld:
         service: "{{ http_port }}"
-        state: disable
+        state: disabled
         permanent: true
         immediate: true
 
