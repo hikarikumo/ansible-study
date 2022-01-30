@@ -25,7 +25,7 @@
 
     - name: Copy index page
       template:
-        src: "files/index.html.jinja2"
+        src: "../files/index.html.jinja2"
         dest: "{{web_root_path}}/index.html"
 
   #   - name: Set up Apache virtualhost
