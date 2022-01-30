@@ -8,6 +8,16 @@
     - ../vars/httpd_vars.yaml
 
   tasks:
+    - name: Stop Apache service
+      service:
+        name: httpd
+        state: stopped
+        
+    - name: Delete document root
+      file:
+        path: "{{ web_root_path }}"
+        state: absent
+          
     #centos based OS version 7 stuff
     - name: Remove Apache on centos major_version 8
       when: ansible_facts['distribution_major_version'] == "8"
@@ -19,16 +29,6 @@
       when: ansible_facts['distribution_major_version'] == "8"
       dnf:
         autoremove: yes
-
-    - name: Stop Apache service
-      service:
-        name: httpd
-        state: stopped
-        
-    - name: Delete document root
-      file:
-        path: "{{ web_root_path }}"
-        state: absent
         
     - name: Disable firewall rule for apache service
       firewalld:
