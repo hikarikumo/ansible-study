@@ -28,7 +28,7 @@
     - name: Enable Apache service to start on boot up
       service:
         name: httpd
-        state: disabled
+        state: stopped
         
     - name: Disable firewall rule for apache service
       firewalld:
