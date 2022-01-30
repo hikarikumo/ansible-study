@@ -20,6 +20,13 @@
       dnf:
         autoremove: yes
 
+    - name: Close firewall port {{ http_port }} for apache
+      ansible.posix.firewalld:
+        service: "{{ http_port }}"
+        state: disable
+        permanent: true
+        immediate: true
+
     # - name: Create document root
     #   file:
     #     path: "{{web_root_path}}"

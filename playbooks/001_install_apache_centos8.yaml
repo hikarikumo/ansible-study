@@ -18,7 +18,7 @@
 
     - name: Create document root
       file:
-        path: "{{web_root_path}}"
+        path: "{{ web_root_path }}"
         state: directory
         owner: "{{ app_user }}"
         mode: '0755'
@@ -26,7 +26,7 @@
     - name: Copy index page
       template:
         src: "../files/index.html.jinja2"
-        dest: "{{web_root_path}}/index.html"
+        dest: "{{ web_root_path }}/index.html"
 
   #   - name: Set up Apache virtualhost
   #     template:
@@ -42,11 +42,12 @@
   #     when: disable_default
   #     notify: Reload Apache
 
-    - name: "firewall-cmd - Allow HTTP on port {{http_port}}"
-      firewall-cmd:
-        rule: allow
-        port: "{{http_port}}"
-        proto: tcp
+    - name: Open firewall port {{ http_port }} for apache
+      ansible.posix.firewalld:
+        service: "{{ http_port }}"
+        state: enabled
+        permanent: true
+        immediate: true
 
   handlers:
     - name: Reload Apache
