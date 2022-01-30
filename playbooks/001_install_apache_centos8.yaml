@@ -8,7 +8,7 @@
     - ../vars/httpd_vars.yaml
 
   tasks:
-#centos based OS version 7 stuff
+      #centos based OS version 7 stuff
     - name: Install Apache on centos major_version 8
       when: ansible_facts['distribution_major_version'] == "8"
       dnf:
@@ -33,14 +33,20 @@
         name: httpd
         state: started
 
-    - name: Open firewall port for apache
-      ansible.posix.firewalld:
-        service: "{{ http_port }}"
-        state: enabled
+    # - name: Open firewall port for apache
+    #   ansible.posix.firewalld:
+    #     service: "{{ http_port }}"
+    #     state: enabled
+    #     zone: public
+    #     permanent: true
+    #     immediate: true        
+    - name: Create firewall rule for apache service
+      firewalld:
+        service: http
         zone: public
-        permanent: true
-        immediate: true        
-      
+        permanent: yes
+        immediate: yes
+        state: enabled  
       
   handlers:
     - name: Restart apache service
