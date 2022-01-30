@@ -20,7 +20,7 @@
       dnf:
         autoremove: yes
 
-    - name: Close firewall port {{ http_port }} for apache
+    - name: Close firewall port "{{ http_port }}" for apache
       ansible.posix.firewalld:
         service: "{{ http_port }}"
         state: disable
