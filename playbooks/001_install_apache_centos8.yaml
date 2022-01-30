@@ -31,21 +31,22 @@
     - name: Enable Apache service to start on boot up
       service:
         name: httpd
-        state: started 
+        state: started
         
-      handlers:
-      - name: Restart apache service
-        service:
-          name: httpd
-          state: restarted
-
     - name: Open firewall port for apache
       ansible.posix.firewalld:
         service: "{{ http_port }}"
         state: enabled
         zone: public
         permanent: true
-        immediate: true
+        immediate: true        
+      handlers:
+      - name: Restart apache service
+        service:
+          name: httpd
+          state: restarted
+
+
 
 
   #   - name: Set up Apache virtualhost
