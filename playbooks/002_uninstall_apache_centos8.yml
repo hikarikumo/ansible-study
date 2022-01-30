@@ -20,15 +20,15 @@
       dnf:
         autoremove: yes
 
-    - name: Create document root
-      file:
-        path: "{{ web_root_path }}"
-        state: absent
-
-    - name: Enable Apache service to start on boot up
+    - name: Stop Apache service
       service:
         name: httpd
         state: stopped
+        
+    - name: Delete document root
+      file:
+        path: "{{ web_root_path }}"
+        state: absent
         
     - name: Disable firewall rule for apache service
       firewalld:
