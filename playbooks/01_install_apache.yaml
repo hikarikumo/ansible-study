@@ -9,13 +9,8 @@
 
   tasks:
 #centos based OS version 7 stuff
-    - name: Packages major_version 8
+    - name: Install Apache on centos major_version 8
       when: ansible_facts['distribution_major_version'] == "8"
-      dnf:
-        name: update_cache
-        update_cache: yes
-
-    - name: Install Apache
       dnf:
         name: httpd
         state: latest
