@@ -32,7 +32,7 @@
       service:
         name: httpd
         state: started
-        
+
     - name: Open firewall port for apache
       ansible.posix.firewalld:
         service: "{{ http_port }}"
@@ -40,11 +40,13 @@
         zone: public
         permanent: true
         immediate: true        
-      handlers:
-      - name: Restart apache service
-        service:
-          name: httpd
-          state: restarted
+      
+      
+  handlers:
+    - name: Restart apache service
+      service:
+        name: httpd
+        state: restarted
 
 
 
