@@ -1,59 +1,67 @@
 ---
-- hosts: all
+- hosts: centos_webservers
+  gather_facts: True
   become: true
-  vars_files:
-    - vars/default.yml
+  become_method: sudo
+  become_user: ansible
+#  vars_files:
+#    - vars/httpd_vars.yaml
 
   tasks:
-    - name: Install prerequisites
-      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
-      loop: [ 'aptitude' ]
+#centos based OS version 7 stuff
+    - name: Packages major_version 8
+      when: ansible_facts['distribution_major_version'] == "8"
+      dnf:
+        name: update_cache
+        update_cache: yes
 
     - name: Install Apache
-      apt: name=apache2 update_cache=yes state=latest
+      dnf:
+        name: httpd
+        state: latest
 
     - name: Create document root
       file:
-        path: "/var/www/{{ http_host }}"
+        path: "{{web_root_path}}"
         state: directory
         owner: "{{ app_user }}"
         mode: '0755'
 
-    - name: Copy index test page
-      template:
-        src: "files/index.html.j2"
-        dest: "/var/www/{{ http_host }}/index.html"
+  #   - name: Copy index test page
+  #     template:
+  #       src: "files/index.html.j2"
+  #       dest: "/var/www/{{ http_host }}/index.html"
 
-    - name: Set up Apache virtualhost
-      template:
-        src: "files/apache.conf.j2"
-        dest: "/etc/apache2/sites-available/{{ http_conf }}"
+  #   - name: Set up Apache virtualhost
+  #     template:
+  #       src: "files/apache.conf.j2"
+  #       dest: "/etc/apache2/sites-available/{{ http_conf }}"
 
-    - name: Enable new site
-      shell: /usr/sbin/a2ensite {{ http_conf }}
-      notify: Reload Apache
+  #   - name: Enable new site
+  #     shell: /usr/sbin/a2ensite {{ http_conf }}
+  #     notify: Reload Apache
 
-    - name: Disable default Apache site
-      shell: /usr/sbin/a2dissite 000-default.conf
-      when: disable_default
-      notify: Reload Apache
+  #   - name: Disable default Apache site
+  #     shell: /usr/sbin/a2dissite 000-default.conf
+  #     when: disable_default
+  #     notify: Reload Apache
 
-    - name: "UFW - Allow HTTP on port {{ http_port }}"
-      ufw:
-        rule: allow
-        port: "{{ http_port }}"
-        proto: tcp
+  #   - name: "UFW - Allow HTTP on port {{ http_port }}"
+  #     ufw:
+  #       rule: allow
+  #       port: "{{ http_port }}"
+  #       proto: tcp
 
-  handlers:
-    - name: Reload Apache
-      service:
-        name: apache2
-        state: reloaded
+  # handlers:
+  #   - name: Reload Apache
+  #     service:
+  #       name: apache2
+  #       state: reloaded
 
-    - name: Restart Apache
-      service:
-        name: apache2
-        state: restarted
+  #   - name: Restart Apache
+  #     service:
+  #       name: apache2
+  #       state: restarted
 
 
 
