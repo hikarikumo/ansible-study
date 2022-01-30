@@ -42,8 +42,8 @@
   #     when: disable_default
   #     notify: Reload Apache
 
-    - name: "UFW - Allow HTTP on port {{http_port}}"
-      ufw:
+    - name: "firewall-cmd - Allow HTTP on port {{http_port}}"
+      firewall-cmd:
         rule: allow
         port: "{{http_port}}"
         proto: tcp
