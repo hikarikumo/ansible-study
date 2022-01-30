@@ -8,7 +8,6 @@
     - ../vars/httpd_vars.yaml
 
   tasks:
-      #centos based OS version 7 stuff
     - name: Install Apache on centos major_version 8
       when: ansible_facts['distribution_major_version'] == "8"
       dnf:
