@@ -13,7 +13,7 @@
       backup: true
       path: /etc/default/grub
       # regexp: '^GRUB_CMDLINE_LINUX="net.ifnames=0\sbiosdevname=0"'
-      regexp: '^\^GRUB_CMDLINE_LINUX="net.ifnames=0\\sbiosdevname=0"'
+      regexp: '^\^GRUB_CMDLINE_LINUX=\"net.ifnames=0\\\sbiosdevname=0\"'
       # regexp: '^GRUB_CMDLINE_LINUX=".*splash'
       state: absent
     check_mode: true
