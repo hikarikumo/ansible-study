@@ -28,3 +28,5 @@
 
   - name: grub2-mkconfig 
     command: grub2-mkconfig
+    register: grub2-mkconfig.result
+    debug: grub2-mkconfig.result
