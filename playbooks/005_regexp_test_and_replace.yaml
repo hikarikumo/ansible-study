@@ -7,19 +7,19 @@
 
   tasks:
   - name: create key-value.cfg file
-  lineinfile:
-    path: ./key-value.cfg
-    state: present
-    line: "{{ item }}"
-  with_items:
-  - '# spacing variations'
-  - 'thiskey1=thisvalue1'
-  - 'thiskey2 = thisvalue2'
-  - 'thiskey3 =thisvalue3'
-  - '# comment variations'
-  - '#thiskey4 = thisvalue4'
-  - '# thiskey5 = thisvalue5'
-  - '## thiskey6 = thisvalue6'
+    lineinfile:
+      path: ./key-value.cfg
+      state: present
+      line: "{{ item }}"
+    with_items:
+    - '# spacing variations'
+    - 'thiskey1=thisvalue1'
+    - 'thiskey2 = thisvalue2'
+    - 'thiskey3 =thisvalue3'
+    - '# comment variations'
+    - '#thiskey4 = thisvalue4'
+    - '# thiskey5 = thisvalue5'
+    - '## thiskey6 = thisvalue6'
      
 
   - name: Replace values in config file
