@@ -1,0 +1,35 @@
+---
+- hosts: centos_webservers
+  gather_facts: True
+  become: true
+  become_method: sudo
+  become_user: root
+  vars_files:
+      - ../vars/grub.yaml
+
+  tasks:
+  - name: check and add ifnames=0 to '{{ grub_file }}'
+    lineinfile:
+      state: present
+      dest: '{{ grub_file }}'
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.*net.ifnames=0)\"[^\"]+)(\")'
+      line: '\1 net.ifnames=0\2'
+      backup: yes
+
+  - name: check and add sbiosdevname=0 to '{{ grub_file }}'
+    lineinfile:
+      state: present
+      dest: '{{ grub_file }}'
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.*sbiosdevname=0)\"[^\"]+)(\")'
+      line: '\1 sbiosdevname=0\2'
+      backup: yes
+
+  - name: grub2_mkconfig 
+    command: grub2-mkconfig
+    register: grub2_mkconfig_result
+    changed_when: true
+
+  # - name: errors of grub2_mkconfig
+  #   debug: var=grub2_mkconfig_result.rc

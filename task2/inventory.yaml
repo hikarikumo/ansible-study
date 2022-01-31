@@ -1,0 +1,11 @@
+all:
+  hosts:
+    control.example.com:
+    node[1:2].example.com:
+  children:
+    centos_webservers:
+      hosts:
+        node[1:2].example.com:
+    ansible_control_node:
+      hosts:
+        control.example.com:
