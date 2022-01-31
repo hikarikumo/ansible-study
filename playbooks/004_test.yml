@@ -28,3 +28,14 @@
       line: '"net.ifnames=0\sbiosdevname=0"'
     when: grub_netdevoption_check == 0
     notify: update grub
+
+  - name: check if network names were named in default style
+    lineinfile:
+      backup: true
+      path: /etc/default/grub
+      regexp: '^GRUB_CMDLINE_LINUX="net.ifnames=0\sbiosdevname=0"'
+      # regexp: '^GRUB_CMDLINE_LINUX=".*splash'
+      state: present
+      create: yes
+    check_mode: true
+    notify: update grub
