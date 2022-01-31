@@ -29,4 +29,6 @@
   - name: grub2_mkconfig 
     command: grub2-mkconfig
     register: grub2_mkconfig.result
-    debug: grub2_mkconfig.result
+
+  - name: result of grub2_mkconfig
+    debug: var=grub2_mkconfig.result
