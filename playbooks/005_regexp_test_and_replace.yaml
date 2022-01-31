@@ -21,6 +21,7 @@
       state: present
       line: "{{ item }}"
     with_items:
+    - 'hello world'
     - '# spacing variations'
     - 'thiskey1=thisvalue1'
     - 'thiskey2 = thisvalue2'
@@ -46,3 +47,11 @@
       - { search: 'thiskey6', replace: 'thiskey6 = NEWthisval6' }
       # keys that do not exist get created
       - { search: 'thiskey7', replace: 'thiskey7 = INSthisnewval7' }
+
+
+  - name: Replace the world
+    lineinfile:
+      dest: ./key-value.cfg
+      regexp: '^(hello)world$'
+      line: '\g<1>030'
+      backrefs: true
