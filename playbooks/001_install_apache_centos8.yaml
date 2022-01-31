@@ -26,6 +26,7 @@
       template:
         src: "../files/index.html.jinja2"
         dest: "{{ web_root_path }}/index.html"
+        notify: restart_httpd
 
     - name: Enable Apache service to start on boot up
       service:
@@ -41,7 +42,7 @@
         state: enabled  
       
   handlers:
-    - name: Restart apache service
+    - name: restart_httpd
       service:
         name: httpd
         state: restarted
