@@ -66,3 +66,11 @@
       backrefs: yes
       regexp: '^(GRUB_CMDLINE_LINUX=(?!.*net.ifnames=0)\"[^\"]+)(\".*)'
       line: '\1 net.ifnames=0 \2'
+
+  - name: 
+    lineinfile:
+      state: present
+      dest: '{{ grub_file }}'
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.*sbiosdevname=0)\"[^\"]+)(\".*)'
+      line: '\1 sbiosdevname=0 \2'
