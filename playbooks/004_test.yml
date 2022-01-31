@@ -36,5 +36,5 @@
       line: '^GRUB_CMDLINE_LINUX="net.ifnames=0\sbiosdevname=0"'
       state: present
       create: yes
-    check_mode: true
-    notify: update grub
+    # check_mode: true
+    # notify: update grub
