@@ -56,3 +56,7 @@
     with_items:
       # - { search: '^\^GRUB_CMDLINE_LINUX="net.ifnames=0\\sbiosdevname=0"', replace: 'GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"' }
       - { search: '^\^\^GRUB_CMDLINE_LINUX="net.ifnames=0\\\sbiosdevname=0" = GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"', replace: 'GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"' }
+
+  - name: Find uniqe entries
+    path: /etc/default/grub
+    shell: cat grub | sort -u | uniq -u > grub
