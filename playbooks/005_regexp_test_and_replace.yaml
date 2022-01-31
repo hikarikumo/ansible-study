@@ -21,7 +21,7 @@
       state: present
       line: "{{ item }}"
     with_items:
-    - 'hello world'
+    - 'helloworld'
     - '# spacing variations'
     - 'thiskey1=thisvalue1'
     - 'thiskey2 = thisvalue2'
