@@ -10,7 +10,7 @@
   tasks:
     - name: Ansible lineinfile mdoule.
       lineinfile:
-      path: /home/ansible/abc.txt
-      line: decodingdevops talks about all the devops tools
-      state: present
-      create: yes
+        path: /home/ansible/abc.txt
+        line: decodingdevops talks about all the devops tools
+        state: present
+        create: yes
