@@ -6,7 +6,16 @@
   become_user: root
 
   tasks:
-  - name: create key-value.cfg file
+  - name: ensure file exists key-value.cfg
+    copy:
+      content: ""
+      dest: key-value.cfg
+      force: no
+      group: ansible
+      owner: ansible
+      mode: 0644
+
+  - name: populate key-value.cfg file
     lineinfile:
       path: ./key-value.cfg
       state: present
