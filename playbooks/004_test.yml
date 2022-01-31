@@ -31,6 +31,7 @@
     register: grub2_mkconfig_result
     failed_when:
       - '"done" not in grub2_mkconfig_result.stderr'
+    changed_when: false
 
   - name: errors of grub2_mkconfig
     debug: var=grub2_mkconfig_result.stderr_lines
