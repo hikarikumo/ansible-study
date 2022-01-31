@@ -20,7 +20,7 @@
         path: "{{ web_root_path }}"
         state: directory
         owner: "{{ app_user }}"
-        mode: '0755'
+        mode: '0644'
 
     - name: Copy index page
       template:
