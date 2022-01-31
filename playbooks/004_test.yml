@@ -8,7 +8,7 @@
       - ../vars/grub.yaml
 
   tasks:
-  - name: 
+  - name: check and add ifnames=0
     lineinfile:
       state: present
       dest: '{{ grub_file }}'
@@ -17,7 +17,7 @@
       line: '\1 net.ifnames=0\2'
       backup: yes
 
-  - name: 
+  - name: check and add sbiosdevname=0
     lineinfile:
       state: present
       dest: '{{ grub_file }}'
@@ -25,6 +25,22 @@
       regexp: '^(GRUB_CMDLINE_LINUX=(?!.*sbiosdevname=0)\"[^\"]+)(\".*)'
       line: '\1 sbiosdevname=0\2'
       backup: yes
+
+  - name: test
+    lineinfile:
+      state: present
+      dest: '{{ grub_file }}'
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.*sbiosdevname=0)\"[^\"]+)'
+      line: '\1 test=0\2'
+      backup: yes
+
+
+
+
+
+
+
 
  # - name: check any errors in naming options within /etc/default/grub
   #   lineinfile:
