@@ -31,4 +31,4 @@
     register: grub2_mkconfig_result
 
   - name: result of grub2_mkconfig
-    debug: var=grub2_mkconfig_result
+    debug: var=grub2_mkconfig_result.stdout_lines
