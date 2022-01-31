@@ -4,48 +4,54 @@
   become: true
   become_method: sudo
   become_user: root
-  vars_files:
-    - ../vars/httpd_vars.yaml
 
   tasks:
-  - name: check any errors in naming options within /etc/default/grub
-    lineinfile:
-      backup: true
-      path: /etc/default/grub
-      # regexp: '^GRUB_CMDLINE_LINUX="net.ifnames=0\sbiosdevname=0"'
-      regexp: '^\^GRUB_CMDLINE_LINUX="net.ifnames=0\\sbiosdevname=0"'
-      state: absent
-    check_mode: true
-    register: grub_netdevoption_check
-    changed_when: false
+  # - name: check any errors in naming options within /etc/default/grub
+  #   lineinfile:
+  #     backup: true
+  #     path: /etc/default/grub
+  #     # regexp: '^GRUB_CMDLINE_LINUX="net.ifnames=0\sbiosdevname=0"'
+  #     regexp: '^\^GRUB_CMDLINE_LINUX="net.ifnames=0\\sbiosdevname=0"'
+  #     state: absent
+  #   check_mode: true
+  #   register: grub_netdevoption_check
+  #   changed_when: false
 
-  - name: insert proper kernel option if needed
-    lineinfile:
-      backrefs: true
-      path: /etc/default/grub
-      regexp: '^\^GRUB_CMDLINE_LINUX="net.ifnames=0\\sbiosdevname=0"'
-      # regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
-      line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"'
-    when: grub_netdevoption_check == 0
-    changed_when: true
+  # - name: insert proper kernel option if needed
+  #   lineinfile:
+  #     backrefs: true
+  #     path: /etc/default/grub
+  #     regexp: '^\^GRUB_CMDLINE_LINUX="net.ifnames=0\\sbiosdevname=0"'
+  #     # regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
+  #     line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"'
+  #   when: grub_netdevoption_check == 0
+  #   changed_when: true
 
-  - name: check if network names were named in default style
-    lineinfile:
-      backup: true
-      path: /etc/default/grub
-      # regexp: '^GRUB_CMDLINE_LINUX="net.ifnames=0\sbiosdevname=0"'
-      regexp: '^GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"'
-      state: absent
-    check_mode: true
-    register: grub_netdevoption_check2
-    changed_when: false
+  # - name: check if network names were named in default style
+  #   lineinfile:
+  #     backup: true
+  #     path: /etc/default/grub
+  #     # regexp: '^GRUB_CMDLINE_LINUX="net.ifnames=0\sbiosdevname=0"'
+  #     regexp: '^GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"'
+  #     state: absent
+  #   check_mode: true
+  #   register: grub_netdevoption_check2
+  #   changed_when: false
 
-  - name: check if network names were named in default style
+  # - name: check if network names were named in default style
+  #   lineinfile:
+  #     backup: true
+  #     path: /etc/default/grub
+  #     line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"'
+  #     state: present
+  #     create: yes
+  #   when: grub_netdevoption_check2 == 0
+  #   changed_when: true
+  - name: Replace values in config file
     lineinfile:
-      backup: true
-      path: /etc/default/grub
-      line: 'GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"'
       state: present
-      create: yes
-    when: grub_netdevoption_check2 == 0
-    changed_when: true
+      path: /etc/default/grub
+      regexp: '^[# ]*{{ item.search }}\s*=\s*'
+      line: '{{ item.replace }}'
+    with_items:
+      - { search: '^\^GRUB_CMDLINE_LINUX="net.ifnames=0\\sbiosdevname=0"', replace: '^\^GRUB_CMDLINE_LINUX="net.ifnames=0\\sbiosdevname=0" = GRUB_CMDLINE_LINUX="net.ifnames=0 sbiosdevname=0"' }
