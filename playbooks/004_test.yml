@@ -1,0 +1,16 @@
+---
+- hosts: centos_webservers
+  gather_facts: True
+  become: true
+  become_method: sudo
+  become_user: root
+  vars_files:
+    - ../vars/httpd_vars.yaml
+
+  tasks:
+    - name: Ansible lineinfile mdoule.
+      lineinfile:
+      path: /home/ansible/abc.txt
+      line: decodingdevops talks about all the devops tools
+      state: present
+      create: yes
