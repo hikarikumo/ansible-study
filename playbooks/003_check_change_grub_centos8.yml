@@ -29,9 +29,7 @@
   - name: grub2_mkconfig 
     command: grub2-mkconfig
     register: grub2_mkconfig_result
-    # failed_when:
-    #   - '"0" not in grub2_mkconfig_result.rc'
-    # changed_when: true
+    changed_when: true
 
-  - name: errors of grub2_mkconfig
-    debug: var=grub2_mkconfig_result
+  # - name: errors of grub2_mkconfig
+  #   debug: var=grub2_mkconfig_result.rc
