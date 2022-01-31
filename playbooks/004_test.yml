@@ -29,10 +29,8 @@
   - name: grub2_mkconfig 
     command: grub2-mkconfig
     register: grub2_mkconfig_result
-
-  - name: result of grub2_mkconfig
-    debug: var=grub2_mkconfig_result.stdout_lines
+    failed_when:
+      - '"done" not in grub2_mkconfig_result.stderr'
 
   - name: errors of grub2_mkconfig
     debug: var=grub2_mkconfig_result.stderr_lines
-  
