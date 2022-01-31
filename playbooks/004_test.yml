@@ -27,4 +27,4 @@
       backup: yes
 
   - name: grub2-mkconfig 
-  command: grub2-mkconfig
+    command: grub2-mkconfig
