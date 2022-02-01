@@ -26,7 +26,8 @@
       template:
         src: "../files/index.html.jinja2"
         dest: "{{ web_root_path }}/index.html"
-        
+        owner: "{{ app_user }}"
+        mode: '0644'
 
     - name: Enable Apache service to start on boot up
       service:

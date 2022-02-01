@@ -6,6 +6,7 @@
   become_user: root
   vars_files:
       - ../vars/grub.yaml
+
   
 
   tasks:
@@ -38,6 +39,8 @@
       src: '/etc/sysconfig/network-scripts/ifcfg-{{ ansible_default_ipv4.interface }}'
       dest: /etc/sysconfig/network-scripts/ifcfg-eth0
       remote_src: yes
+      owner: root
+      mode: '0644'
 
   - name: replace network interface name in config file
     lineinfile:
@@ -48,6 +51,7 @@
       line: '\1{{ item.replace }}'
     with_items:
       - { search: '{{ ansible_default_ipv4.interface }}', replace: eth0 }
+    
 
   - name: replace network interface device in config file
     lineinfile:
