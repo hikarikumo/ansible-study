@@ -1,7 +1,4 @@
 ---
 app_user: "apache"
 web_root_path: "/var/www/html/"
-http_host: "example.com"
-http_conf: "your_domain.conf"
-http_port: "http"
-disable_default: true
+domain: "example.com"

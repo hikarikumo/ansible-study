@@ -5,10 +5,8 @@
   become_method: sudo
   become_user: root
   vars_files:
-      - ../vars/grub.yaml
-
+      - vars/grub.yaml
   
-
   tasks:
   - name: print facts
     debug:

@@ -5,11 +5,11 @@
   become_method: sudo
   become_user: root
   vars_files:
-    - ../vars/httpd_vars.yaml
+    - vars/httpd_vars.yaml
 
   tasks:
     - name: Install Apache on centos major_version 8
-      when: ansible_facts['distribution_major_version'] == "8"
+      when: ansible_facts['distribution_major_version'] == '8'
       dnf:
         name: httpd
         state: latest
@@ -17,16 +17,16 @@
 
     - name: Create document root
       file:
-        path: "{{ web_root_path }}"
+        path: '{{ web_root_path }}'
         state: directory
-        owner: "{{ app_user }}"
-        mode: '0644'
+        owner: '{{ app_user }}'
+        mode: '0755'
 
     - name: Copy index page
       template:
-        src: "../files/index.html.jinja2"
-        dest: "{{ web_root_path }}/index.html"
-        owner: "{{ app_user }}"
+        src: 'files/index.html.jinja2'
+        dest: '{{ web_root_path }}/index.html'
+        owner: '{{ app_user }}'
         mode: '0644'
 
     - name: Enable Apache service to start on boot up
