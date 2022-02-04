@@ -41,7 +41,7 @@
         zone: public
         permanent: yes
         immediate: yes
-        state: enabled  
+        state: enabled
       
   handlers:
     - name: restart_httpd
