@@ -1,0 +1,24 @@
+---
+- hosts: centos_webservers
+  gather_facts: False
+  become: true
+  become_method: sudo
+  become_user: root
+  vars_files:
+    - group_vars/users/user_vars.yaml
+    - group_vars/users/vault.yaml
+    - group_vars/vars.yaml
+
+  tasks:
+    - name: Create users
+      user:
+        name: "{{ item.username }}"
+        password: "{{ item.password | password_hash('sha512') }}"
+        state: present
+        shell: /bin/bash
+        system: no        
+        createhome: yes
+        home: "/home/{{ item.username }}"
+        comment: "{{ item.username }}@{{ domain }}"
+      loop: "{{ users }}"
+      no_log: true

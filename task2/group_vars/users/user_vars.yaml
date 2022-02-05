@@ -1,0 +1,11 @@
+---
+users:
+  - name: "Alice"
+    username: "alice"
+    password: "{{ alice_vault_password }}"
+  - name: "Carol"
+    username: "carol"
+    password: "{{ carol_vault_password }}"
+  - name: "Bob"
+    username: "bob"
+    password: "{{ bob_vault_password }}"
