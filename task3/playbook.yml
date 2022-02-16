@@ -1,0 +1,12 @@
+---
+pre-tasks:
+  - name: Create firewall rule for apache service
+    firewalld:
+      service: http
+      zone: public
+      permanent: yes
+      immediate: yes
+      state: enabled
+
+roles:
+  
