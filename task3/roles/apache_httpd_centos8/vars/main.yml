@@ -1,4 +1,5 @@
 ---
+grub_file: /etc/default/grub
 app_user: "apache"
 web_root_path: "/var/www/html/"
 domain: "example.com"

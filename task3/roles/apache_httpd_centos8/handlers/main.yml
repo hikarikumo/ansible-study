@@ -1,6 +1,5 @@
----    
-- handlers:
-    - name: restart_httpd
-      service:
-        name: httpd
-        state: restarted
+---
+- name: restart_httpd
+  service:
+    name: httpd
+    state: restarted

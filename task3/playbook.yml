@@ -1,5 +1,11 @@
 ---
-pre-tasks:
+- hosts: centos_webservers
+  gather_facts: True
+  become: true
+  become_method: sudo
+  become_user: root
+
+  pre_tasks:
   - name: Create firewall rule for apache service
     firewalld:
       service: http
@@ -8,5 +14,5 @@ pre-tasks:
       immediate: yes
       state: enabled
 
-roles:
-  
+  roles:
+  - role: 'roles/apache_httpd_centos8'
