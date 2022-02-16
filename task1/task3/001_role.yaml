@@ -7,9 +7,6 @@
   vars_files:
     - vars/httpd_vars.yaml
 
-  pre_tasks:
-    - name: Update dnf cache if needed.
-      dnf: update_cache=yes
 
   tasks:
     - name: Install Apache on centos major_version 8
