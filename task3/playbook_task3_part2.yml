@@ -1,0 +1,23 @@
+---
+- hosts: centos_webservers
+  gather_facts: True
+  become: true
+  become_method: sudo
+  become_user: root
+
+  pre_tasks:
+  - name: Create firewall rule for vsftpd service port 21
+    firewalld:
+      port: '{{ item }}'
+      zone: public
+      permanent: yes
+      immediate: yes
+      state: enabled
+    loop:
+      - 20/tcp
+      - 21/tcp
+      - 40000/tcp
+      - 50000/tcp
+
+  roles:
+  - role: 'roles/add_enable_vsftpd'

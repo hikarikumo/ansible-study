@@ -1,0 +1,45 @@
+---
+- name: Allow full read/write access through SELinux for centos8
+  seboolean:
+    name: ftpd_full_access
+    state: yes
+    persistent: yes
+  when:
+   - ansible_os_family == 'RedHat'
+   - ansible_distribution_major_version >= "8"
+  
+- name: Allow full read/write access through SELinux for centos8
+  seboolean:
+    name: ftpd_anon_write
+    state: yes
+    persistent: on
+  when:
+   - ansible_os_family == 'RedHat'
+   - ansible_distribution_major_version >= "8"
+
+- name: set shell getsetbool home
+  shell: setsebool -P allow_ftpd_anon_write on
+  register: output_setsebool_ftpd_full_access
+
+- name: shell setsebool output
+  debug: var=output_setsebool_ftpd_full_access.stdout_lines
+
+- name: set shell getsetbool home
+  shell: chcon -t public_content_rw_t '{{ vsftpd_anon_root_upload }}'
+  register: output_getsetbool_ftpd_anon_write
+  
+- name: shell getsetbool output
+  debug: var=output_getsetbool_ftpd_anon_write.stdout_lines
+
+- name: Check if ftp_home_dir exists
+  shell: getsebool -a | grep '^ftp_home_dir\b'
+  register: var_exists
+  failed_when: false
+  changed_when: false
+
+- name: Allow access to home directories
+  seboolean:
+    name: ftp_home_dir
+    state: yes
+    persistent: yes
+  when: var_exists.rc == 0

@@ -1,0 +1,147 @@
+---
+- name: Install vsftpd on centos major_version 8
+  when: ansible_facts['distribution_major_version'] == '8'
+  dnf:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: allow IPv4 listen mode
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^listen=YES'
+    line: 'listen=NO'
+    backup: yes
+
+- name: remove IPv6 listen mode
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^listen_ipv6=NO'
+    line: 'listen_ipv6=YES'
+    backup: yes
+
+
+- name: Ensure `listen` and `listen_ipv6` are mutually exclusive
+  assert:
+    that: "vsftpd_listen != vsftpd_listen_ipv6"
+
+- name: allow connections to vsftpd '{{ vsftpd_cfg }}' on 20 tcp port
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^connect_from_port_20=NO'
+    line: 'connect_from_port_20=YES'
+    backup: yes
+
+- name: Ensure `vsftpd_anon_root` exists
+  file:
+    path: '{{ vsftpd_anon_root }}'
+    state: directory
+    owner: '{{ vsftpd_owner }}'
+    group: '{{ vsftpd_group }}'
+    mode: '{{ vsftpd_mode_root }}'
+    setype: '{{ vsftpd_setype }}'
+  when: vsftpd_anon_root is defined
+
+- name: Ensure `vsftpd_anon_root_upload` exists
+  file:
+    path: '{{ vsftpd_anon_root_upload }}'
+    state: directory
+    owner: '{{ vsftpd_owner }}'
+    group: '{{ vsftpd_group }}'
+    mode: '{{ vsftpd_mode_root_upload }}'
+    setype: '{{ vsftpd_setype }}'
+  when: vsftpd_anon_root is defined
+
+- name: allow anonymous connections to vsftpd '{{ vsftpd_cfg }}'
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^anonymous_enable=NO'
+    line: 'anonymous_enable=YES'
+    backup: yes
+
+
+- name: allow anonymous upload to vsftpd '{{ vsftpd_cfg }}'
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^(.*)anon_upload_enable'
+    line: 'anon_upload_enable=YES'
+    backup: yes
+
+- name: don't ask for password for anonyous user on vsftpd '{{ vsftpd_cfg }}'
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^no_anon_password=NO'
+    line: 'no_anon_password=YES'
+    backup: yes
+
+- name: don't ask for password for anonyous user on vsftpd '{{ vsftpd_cfg }}'
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^pasv_min_port='
+    line: 'pasv_min_port=40000'
+    backup: yes
+
+- name: don't ask for password for anonyous user on vsftpd '{{ vsftpd_cfg }}'
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^pasv_max_port='
+    line: 'pasv_max_port=50000'
+    backup: yes
+
+- name: allow write to vsftpd '{{ vsftpd_cfg }}'
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^write_enable=NO'
+    line: 'write_enable=YES'
+    backup: yes
+
+- name: allow anonymous root '{{ vsftpd_cfg }}'
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^anon_root='
+    line: 'anon_root={{ vsftpd_anon_root }}'
+    backup: yes
+
+- name: disable local users connections to vsftpd '{{ vsftpd_cfg }}'
+  lineinfile:
+    state: present
+    dest: '{{ vsftpd_cfg }}'
+    backrefs: yes
+    regexp: '^local_enable=YES'
+    line: 'local_enable=NO'
+    backup: yes
+
+- name: Enable vsftpd service to start on boot up
+  service:
+    name: vsftpd
+    state: started
+  notify: restart_vsftpd
+
+
+- include_tasks: selinux.yml
+  when: ansible_selinux is defined and ansible_selinux != false and ansible_selinux.status == 'enabled'
+
+- name: Enable vsftpd service restarted
+  service:
+    name: vsftpd
+    state: restarted

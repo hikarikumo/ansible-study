@@ -1,0 +1,10 @@
+---
+vsftpd_group: ftp
+vsftpd_listen: true
+vsftpd_listen_ipv6: false
+vsftpd_local_enable: false
+vsftpd_local_umask: '022'
+vsftpd_mode_root: '0755'
+vsftpd_mode_root_upload: '0777'
+vsftpd_owner: ftp
+vsftpd_setype: public_content_t

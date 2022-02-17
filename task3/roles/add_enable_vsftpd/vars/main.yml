@@ -1,0 +1,4 @@
+---
+vsftpd_cfg: /etc/vsftpd/vsftpd.conf
+vsftpd_anon_root: /var/ftp/pub
+vsftpd_anon_root_upload: /var/ftp/pub/upload

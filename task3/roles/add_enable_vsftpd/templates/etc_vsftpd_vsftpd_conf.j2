@@ -1,0 +1,18 @@
+#
+# Access control for registered users
+#
+local_enable={{ 'YES' if vsftpd_local_enable else 'NO' }}
+{% if vsftpd_local_root is defined %}
+local_root={{ vsftpd_local_root }}
+{% endif %}
+local_umask={{ vsftpd_local_umask }}
+
+
+{% if vsftpd_options is defined %}
+#
+# Other settings
+#
+{% for setting in vsftpd_options %}
+{{ setting.key }}={{ setting.value }}
+{% endfor %}
+{% endif %}
